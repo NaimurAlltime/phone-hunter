@@ -10,8 +10,17 @@ const displayPhone = phones => {
     const phoneContainer = document.getElementById('phone-container');
     // remove previous search item 
     phoneContainer.textContent = '';
-   
+     // display only 10 phone 
+     phones = phones.slice(0, 6);
+    //  display no phone found 
+    const phoneNotFound = document.getElementById('no-phone-message');
+    if(phones.length === 0){
+       phoneNotFound.classList.remove('d-none');
+    }else{
+        phoneNotFound.classList.add('d-none');
+    }
 
+    // display all phone 
     phones.forEach(phone => {
         // console.log(phone);
         const phoneDiv = document.createElement('div');
