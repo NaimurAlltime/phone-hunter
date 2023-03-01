@@ -40,7 +40,9 @@ const displayPhone = (phones, dataLimit) => {
           <div class="card-body">
            <h5 class="card-title">${phone.phone_name}</h5>
            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-           <a href="#" onclick="loadPhoneDetails('${phone.slug}')" class="btn btn-primary">Show Details</a>
+           <div>
+           <button onclick="loadPhoneDetails('${phone.slug}')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#phoneDetailsModal">Show Details</button >
+           </div>
           </div>
          </div>
         `;
@@ -70,7 +72,7 @@ document.getElementById('search-btn').addEventListener('click', function(){
 document.getElementById('search-field').addEventListener('keypress', function (e) {
     // console.log(e.key)
     if (e.key === 'Enter') {
-        processSearch(10);
+      processSearch(10);
     }
 });
 
@@ -94,7 +96,21 @@ const loadPhoneDetails = async(id) => {
     const url = `https://openapi.programming-hero.com/api/phone/${id}`;
     const res = await fetch(url);
     const data = await res.json();
-    console.log(data);
+    displayPhoneDetails(data.data);
 }
 
-// loadPhone();
+// display Phone Details 
+const displayPhoneDetails = phone => {
+    //    console.log(phone);
+    const modalTitle = document.getElementById('phoneDetailsModalLabel');
+    modalTitle.innerText = phone.name;
+    document.getElementById('modal-body').innerHTML = `
+    <img src="${phone.image}" class="img-fluid">
+    <p class="mt-2">Release Date: ${phone.releaseDate ? phone.releaseDate : 'Release Date Not Found!'}</p>
+    <p>Storage: ${phone.mainFeatures ? phone.mainFeatures.storage : 'Storage Data Information Not Found!'}</p>
+    <p>DisplaySize
+    : ${phone.mainFeatures ? phone.mainFeatures.displaySize : 'displaySize Data Information Not Found!'}</p>
+   `
+}
+
+loadPhone('apple');
